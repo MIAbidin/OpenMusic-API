@@ -23,7 +23,6 @@ const init = async () => {
     },
   });
 
-  // Daftarkan plugin albums dan songs
   await server.register([
     {
       plugin: albums,
@@ -42,10 +41,8 @@ const init = async () => {
   ]);
 
   server.ext('onPreResponse', (request, h) => {
-    // Mendapatkan konteks response dari request
     const { response } = request;
 
-    // Penanganan client error secara internal.
     if (response instanceof ClientError) {
       const newResponse = h.response({
         status: 'fail',

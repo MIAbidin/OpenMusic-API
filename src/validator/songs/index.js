@@ -6,7 +6,7 @@ const SongsValidator = {
     const validationResult = SongPayloadSchema.validate(payload);
     if (validationResult.error) {
       const error = new InvariantError(validationResult.error.message);
-      error.isJoi = true; // Tandai bahwa ini adalah error validasi Joi
+      error.isJoi = true;
       throw error;
     }
   },

@@ -55,6 +55,13 @@ class AlbumsService {
 
     this._albums.splice(index, 1);
   }
+
+  getSongsByAlbumId(albumId) {
+    return this._songs
+      .filter((song) => song.albumId === albumId)
+      .map(({ id, title, performer }) => ({ id, title, performer }));
+  }
+  
 }
 
 module.exports = AlbumsService;

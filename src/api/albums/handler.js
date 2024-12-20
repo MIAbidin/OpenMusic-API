@@ -1,14 +1,12 @@
+const autoBind = require('auto-bind');
 const ClientError = require('../../exceptions/ClientError');
 
 class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
-
-    this.postAlbumHandler = this.postAlbumHandler.bind(this);
-    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
-    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
-    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    
+    autoBind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -33,18 +31,25 @@ class AlbumsHandler {
   async getAlbumByIdHandler(request, h) {
     try {
       const { id } = request.params;
+  
       const album = await this._service.getAlbumById(id);
 
+      const songs = await this._service.getSongsByAlbumId(id);
+  
       return {
         status: 'success',
         data: {
-          album,
+          album: {
+            ...album,
+            songs,
+          },
         },
       };
     } catch (error) {
       return this._handleError(error, h);
     }
   }
+  
 
   async putAlbumByIdHandler(request, h) {
     try {

@@ -1,4 +1,3 @@
-// src/services/postgres/AlbumsService.js
 const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
 const InvariantError = require('../../exceptions/InvariantError');
@@ -62,6 +61,17 @@ class AlbumsService {
       throw new NotFoundError('Album gagal dihapus. Id tidak ditemukan');
     }
   }
+
+  async getSongsByAlbumId(albumId) {
+    const query = {
+      text: 'SELECT id, title, performer FROM songs WHERE "albumId" = $1',
+      values: [albumId],
+    };
+  
+    const result = await this._pool.query(query);
+    return result.rows;
+  }
+  
 }
 
 module.exports = AlbumsService;

@@ -22,27 +22,24 @@ class SongsService {
     return id;
   }
 
-  getSongs({ title, performer } = {}) {
-    let filteredSongs = this._songs;
-
+  getSongs({ title, performer }) {
+    let songs = this._songs;
+  
     if (title) {
-      filteredSongs = filteredSongs.filter((song) =>
+      songs = songs.filter((song) =>
         song.title.toLowerCase().includes(title.toLowerCase())
       );
     }
-
+  
     if (performer) {
-      filteredSongs = filteredSongs.filter((song) =>
+      songs = songs.filter((song) =>
         song.performer.toLowerCase().includes(performer.toLowerCase())
       );
     }
-
-    return filteredSongs.map((song) => ({
-      id: song.id,
-      title: song.title,
-      performer: song.performer,
-    }));
+  
+    return songs.map(({ id, title, performer }) => ({ id, title, performer }));
   }
+  
 
   getSongById(id) {
     const song = this._songs.find((song) => song.id === id);

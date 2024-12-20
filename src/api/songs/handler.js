@@ -1,13 +1,11 @@
+const autoBind = require('auto-bind');
+
 class SongsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
 
-    this.postSongHandler = this.postSongHandler.bind(this);
-    this.getSongsHandler = this.getSongsHandler.bind(this);
-    this.getSongByIdHandler = this.getSongByIdHandler.bind(this);
-    this.putSongByIdHandler = this.putSongByIdHandler.bind(this);
-    this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postSongHandler(request, h) {
@@ -24,17 +22,14 @@ class SongsHandler {
       response.code(201);
       return response;
     } catch (error) {
-      console.error(error); // Tambahkan log untuk debugging
   
       if (error.isJoi) {
-        // Error validasi
         return h.response({
           status: 'fail',
-          message: error.message, // Tampilkan pesan validasi dari Joi
+          message: error.message,
         }).code(400);
       }
-  
-      // Error lainnya (database, internal, dll.)
+
       return h.response({
         status: 'error',
         message: 'Internal server error',
@@ -42,21 +37,23 @@ class SongsHandler {
     }
   }
   
-  
-  
-  
+  async getSongsHandler(request, h) {
+    try {
+      const { title, performer } = request.query;
 
-  async getSongsHandler(request) {
-    const { title, performer } = request.query;
-    const songs = await this._service.getSongs({ title, performer });
-
-    return {
-      status: 'success',
-      data: {
-        songs,
-      },
-    };
+      const songs = await this._service.getSongs({ title, performer });
+  
+      return {
+        status: 'success',
+        data: {
+          songs,
+        },
+      };
+    } catch (error) {
+      return this._handleError(error, h);
+    }
   }
+  
 
   async getSongByIdHandler(request) {
     const { id } = request.params;
