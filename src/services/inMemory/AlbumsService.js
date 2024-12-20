@@ -61,7 +61,7 @@ class AlbumsService {
       .filter((song) => song.albumId === albumId)
       .map(({ id, title, performer }) => ({ id, title, performer }));
   }
-  
+
 }
 
 module.exports = AlbumsService;

@@ -24,22 +24,22 @@ class SongsService {
 
   getSongs({ title, performer }) {
     let songs = this._songs;
-  
+
     if (title) {
       songs = songs.filter((song) =>
         song.title.toLowerCase().includes(title.toLowerCase())
       );
     }
-  
+
     if (performer) {
       songs = songs.filter((song) =>
         song.performer.toLowerCase().includes(performer.toLowerCase())
       );
     }
-  
+
     return songs.map(({ id, title, performer }) => ({ id, title, performer }));
   }
-  
+
 
   getSongById(id) {
     const song = this._songs.find((song) => song.id === id);

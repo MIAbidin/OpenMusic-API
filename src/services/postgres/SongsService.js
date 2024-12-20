@@ -27,21 +27,21 @@ class SongsService {
   async getSongs({ title, performer }) {
     let query = 'SELECT id, title, performer FROM songs WHERE 1=1';
     const values = [];
-  
+
     if (title) {
       query += ' AND title ILIKE $1';
       values.push(`%${title}%`);
     }
-  
+
     if (performer) {
       query += ` AND performer ILIKE $${values.length + 1}`;
       values.push(`%${performer}%`);
     }
-  
+
     const result = await this._pool.query({ text: query, values });
     return result.rows;
   }
-  
+
 
   async getSongById(id) {
     const query = {
@@ -63,12 +63,12 @@ class SongsService {
       values: [title, year, genre, performer, duration, albumId, id],
     };
     const result = await this._pool.query(query);
-  
+
     if (!result.rows.length) {
       throw new NotFoundError('Gagal memperbarui lagu. Id tidak ditemukan');
     }
   }
-  
+
 
   async deleteSongById(id) {
     const query = {

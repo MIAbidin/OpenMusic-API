@@ -12,9 +12,9 @@ class SongsHandler {
     try {
       this._validator.validateSongPayload(request.payload);
       const { title, year, genre, performer, duration, albumId } = request.payload;
-  
+
       const songId = await this._service.addSong({ title, year, genre, performer, duration, albumId });
-  
+
       const response = h.response({
         status: 'success',
         data: { songId },
@@ -22,7 +22,7 @@ class SongsHandler {
       response.code(201);
       return response;
     } catch (error) {
-  
+
       if (error.isJoi) {
         return h.response({
           status: 'fail',
@@ -36,13 +36,13 @@ class SongsHandler {
       }).code(500);
     }
   }
-  
+
   async getSongsHandler(request, h) {
     try {
       const { title, performer } = request.query;
 
       const songs = await this._service.getSongs({ title, performer });
-  
+
       return {
         status: 'success',
         data: {
@@ -53,7 +53,7 @@ class SongsHandler {
       return this._handleError(error, h);
     }
   }
-  
+
 
   async getSongByIdHandler(request) {
     const { id } = request.params;

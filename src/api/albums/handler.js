@@ -5,7 +5,7 @@ class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
-    
+
     autoBind(this);
   }
 
@@ -31,11 +31,11 @@ class AlbumsHandler {
   async getAlbumByIdHandler(request, h) {
     try {
       const { id } = request.params;
-  
+
       const album = await this._service.getAlbumById(id);
 
       const songs = await this._service.getSongsByAlbumId(id);
-  
+
       return {
         status: 'success',
         data: {
@@ -49,7 +49,7 @@ class AlbumsHandler {
       return this._handleError(error, h);
     }
   }
-  
+
 
   async putAlbumByIdHandler(request, h) {
     try {
